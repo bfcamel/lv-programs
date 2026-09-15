@@ -1,0 +1,179 @@
+.lvfp-admin-wrap {
+	max-width: 1180px;
+}
+
+.lvfp-admin-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 24px;
+	margin-top: 24px;
+}
+
+.lvfp-admin-card {
+	padding: 24px;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	background: #fff;
+	box-shadow: 0 4px 18px rgba(0, 0, 0, .04);
+}
+
+.lvfp-admin-card > h2 {
+	margin-top: 0;
+	font-size: 20px;
+}
+
+.lvfp-admin-field + .lvfp-admin-field {
+	margin-top: 24px;
+}
+
+.lvfp-admin-field--button {
+	padding-top: 22px;
+	border-top: 1px solid #dcdcde;
+}
+
+.lvfp-admin-field--button h3 {
+	margin: 0 0 14px;
+	font-size: 16px;
+}
+
+.lvfp-admin-field--button label:not(.lvfp-admin-toggle) {
+	display: block;
+	margin: 12px 0 6px;
+}
+
+.lvfp-admin-toggle {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: 600;
+}
+
+.lvfp-program-fields {
+	display: grid;
+	gap: 24px;
+	max-width: 900px;
+}
+
+.lvfp-program-field > label {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 14px;
+}
+
+#lvfp-description {
+	min-height: 220px;
+	resize: vertical;
+}
+
+.lvfp-image-control {
+	max-width: 560px;
+}
+
+.lvfp-image-preview {
+	display: grid;
+	place-items: center;
+	min-height: 180px;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	border: 1px solid #dcdcde;
+	border-radius: 5px;
+	background: #f6f7f7;
+}
+
+.lvfp-image-preview.is-empty::before {
+	color: #8c8f94;
+	content: "Изображение не выбрано";
+}
+
+.lvfp-image-preview img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.lvfp-remove-image {
+	margin-left: 8px;
+}
+
+.lvfp-program-placement-note {
+	max-width: 872px;
+	margin: 24px 0 0;
+	padding: 12px 14px;
+	border-left: 4px solid #2271b1;
+	background: #f0f6fc;
+}
+
+.lvfp-sortable {
+	min-height: 72px;
+	margin: 20px 0 0;
+}
+
+.lvfp-sortable__item {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	margin: 0 0 9px;
+	padding: 13px 14px;
+	border: 1px solid #dcdcde;
+	border-radius: 5px;
+	background: #f6f7f7;
+	cursor: move;
+}
+
+.lvfp-sortable__item.ui-sortable-helper {
+	box-shadow: 0 8px 24px rgba(0, 0, 0, .14);
+}
+
+.lvfp-sortable__handle {
+	color: #646970;
+}
+
+.lvfp-sortable__title {
+	flex: 1;
+	font-weight: 600;
+}
+
+.lvfp-visibility {
+	display: inline-flex;
+	gap: 6px;
+	align-items: center;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.lvfp-visibility input {
+	margin: 0;
+}
+
+.lvfp-sortable__placeholder {
+	height: 48px;
+	margin: 0 0 9px;
+	border: 2px dashed #2271b1;
+	border-radius: 5px;
+	background: #f0f6fc;
+}
+
+.lvfp-status {
+	padding: 3px 7px;
+	border-radius: 4px;
+	color: #3c434a;
+	background: #dcdcde;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.lvfp-status--hidden,
+.lvfp-list-no {
+	color: #8a2424;
+}
+
+.lvfp-list-yes {
+	color: #087b46;
+}
+
+@media (max-width: 782px) {
+	.lvfp-admin-grid {
+		grid-template-columns: 1fr;
+	}
+
+}
