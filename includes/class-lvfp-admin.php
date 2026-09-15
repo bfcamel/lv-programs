@@ -83,6 +83,7 @@ final class LVFP_Admin {
 	 */
 	public function render_program_meta_box( $post ) {
 		$label       = (string) get_post_meta( $post->ID, '_lvfp_label', true );
+		$program_url = (string) get_post_meta( $post->ID, '_lvfp_url', true );
 		$description = metadata_exists( 'post', $post->ID, '_lvfp_description' )
 			? (string) get_post_meta( $post->ID, '_lvfp_description', true )
 			: $post->post_content;
@@ -100,7 +101,13 @@ final class LVFP_Admin {
 			<div class="lvfp-program-field">
 				<label for="lvfp-label"><strong>Рубрика</strong></label>
 				<input class="widefat" id="lvfp-label" name="lvfp_label" type="text" value="<?php echo esc_attr( $label ); ?>" placeholder="Например: Реабилитация">
-				<p class="description">Короткая цветная надпись над названием карточки.</p>
+				<p class="description">Короткая надпись, которая показывается поверх фотографии над названием программы.</p>
+			</div>
+
+			<div class="lvfp-program-field">
+				<label for="lvfp-url"><strong>Ссылка на страницу программы</strong></label>
+				<input class="widefat" id="lvfp-url" name="lvfp_url" type="text" value="<?php echo esc_attr( $program_url ); ?>" placeholder="https://bfcamel.ru/... или /programs/.../">
+				<p class="description">Необязательное поле. Если оставить его пустым, ссылка «Подробнее о программе» в карточке не появится.</p>
 			</div>
 
 			<div class="lvfp-program-field lvfp-image-control">
@@ -136,9 +143,11 @@ final class LVFP_Admin {
 		}
 
 		$label       = isset( $_POST['lvfp_label'] ) ? sanitize_text_field( wp_unslash( $_POST['lvfp_label'] ) ) : '';
+		$program_url = isset( $_POST['lvfp_url'] ) ? esc_url_raw( trim( wp_unslash( $_POST['lvfp_url'] ) ) ) : '';
 		$description = isset( $_POST['lvfp_description'] ) ? wp_kses_post( wp_unslash( $_POST['lvfp_description'] ) ) : '';
 
 		update_post_meta( $post_id, '_lvfp_label', $label );
+		update_post_meta( $post_id, '_lvfp_url', $program_url );
 		update_post_meta( $post_id, '_lvfp_description', $description );
 		update_post_meta( $post_id, '_lvfp_image_id', isset( $_POST['lvfp_image_id'] ) ? absint( $_POST['lvfp_image_id'] ) : 0 );
 	}
