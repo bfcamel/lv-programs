@@ -233,29 +233,30 @@ final class LVFP_Plugin {
 	 * @param int     $index Display index.
 	 */
 	private function render_card( $program, $index ) {
-		$accent = '';
-		if ( 0 === $index % 6 ) {
-			$accent = ' lvfp-card--dark';
-		} elseif ( 3 === $index % 6 ) {
-			$accent = ' lvfp-card--mint';
-		}
-
 		$label       = (string) get_post_meta( $program->ID, '_lvfp_label', true );
+		$program_url = (string) get_post_meta( $program->ID, '_lvfp_url', true );
 		$description = metadata_exists( 'post', $program->ID, '_lvfp_description' )
 			? (string) get_post_meta( $program->ID, '_lvfp_description', true )
 			: $program->post_content;
 		$content     = wpautop( wp_kses_post( $description ) );
 		?>
-		<article class="lvfp-card<?php echo esc_attr( $accent ); ?>">
+		<article class="lvfp-card">
 			<div class="lvfp-card__media">
 				<?php echo $this->get_program_image( $program, $index ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<div class="lvfp-card__overlay">
+					<?php if ( '' !== $label ) : ?>
+						<span class="lvfp-card__label"><?php echo esc_html( $label ); ?></span>
+					<?php endif; ?>
+					<h3 class="lvfp-card__title"><?php echo esc_html( get_the_title( $program ) ); ?></h3>
+				</div>
 			</div>
 			<div class="lvfp-card__body">
-				<?php if ( '' !== $label ) : ?>
-					<span class="lvfp-card__label"><?php echo esc_html( $label ); ?></span>
-				<?php endif; ?>
-				<h3 class="lvfp-card__title"><?php echo esc_html( get_the_title( $program ) ); ?></h3>
 				<div class="lvfp-card__desc"><?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+				<?php if ( '' !== $program_url ) : ?>
+					<div class="lvfp-card__actions">
+						<a class="lvfp-card__link" href="<?php echo esc_url( $program_url ); ?>">Подробнее о программе</a>
+					</div>
+				<?php endif; ?>
 			</div>
 		</article>
 		<?php
