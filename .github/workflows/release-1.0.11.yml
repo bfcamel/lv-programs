@@ -1,0 +1,58 @@
+name: Release 1.0.11
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/release-1.0.11.yml
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check PHP syntax
+        run: |
+          php -l lv-programs.php
+          php -l includes/class-lvfp-plugin.php
+          php -l includes/class-lvfp-admin.php
+
+      - name: Build WordPress plugin ZIP
+        run: |
+          mkdir -p build/lv-programs
+          rsync -a \
+            --exclude='.git*' \
+            --exclude='.github' \
+            --exclude='build' \
+            --exclude='*.zip' \
+            ./ build/lv-programs/
+          cd build
+          zip -rq ../lv-programs-1.0.11.zip lv-programs
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > release-notes.md <<'EOF'
+          ## LV Programs 1.0.11
+
+          - Названия программ в карточках увеличены до 28–36 px на широких экранах с увеличенными адаптивными размерами на мобильных.
+          - Нумерация карточек программ теперь белая.
+          EOF
+
+          if gh release view v1.0.11 >/dev/null 2>&1; then
+            echo 'Release v1.0.11 already exists; nothing to do.'
+            exit 0
+          fi
+
+          gh release create v1.0.11 \
+            lv-programs-1.0.11.zip \
+            --target "d50bb8d05025407ae8317e22aee9d97b4af6880b" \
+            --title "LV Programs 1.0.11" \
+            --notes-file release-notes.md
