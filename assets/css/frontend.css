@@ -290,6 +290,8 @@
 
 .lvfp-card__desc {
 	color: inherit;
+	font-size: 15px;
+	line-height: 1.58;
 }
 
 .lvfp-card__desc p {
