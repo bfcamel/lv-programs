@@ -1,0 +1,61 @@
+name: Release 1.0.6
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/release-1.0.6.yml
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check PHP syntax
+        run: |
+          php -l lv-programs.php
+          php -l includes/class-lvfp-plugin.php
+          php -l includes/class-lvfp-admin.php
+
+      - name: Build WordPress plugin ZIP
+        run: |
+          mkdir -p build/lv-programs
+          rsync -a \
+            --exclude='.git*' \
+            --exclude='.github' \
+            --exclude='build' \
+            --exclude='*.zip' \
+            ./ build/lv-programs/
+          cd build
+          zip -rq ../lv-programs-1.0.6.zip lv-programs
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > release-notes.md <<'EOF'
+          ## LV Programs 1.0.6
+
+          - Карточки программ получили новую вертикальную верстку: фотография сверху, описание снизу.
+          - Название программы и рубрика теперь располагаются поверх фотографии.
+          - В редактор программы добавлено необязательное поле ссылки на отдельную страницу программы.
+          - Ссылка «Подробнее о программе» выводится только когда адрес заполнен в админке.
+          - Двухколоночная сетка на десктопе и адаптивность сохранены.
+          EOF
+
+          if gh release view v1.0.6 >/dev/null 2>&1; then
+            echo 'Release v1.0.6 already exists; nothing to do.'
+            exit 0
+          fi
+
+          gh release create v1.0.6 \
+            lv-programs-1.0.6.zip \
+            --target "$GITHUB_SHA" \
+            --title "LV Programs 1.0.6" \
+            --notes-file release-notes.md
