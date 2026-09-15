@@ -1,0 +1,60 @@
+name: Release 1.0.7
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/release-1.0.7.yml
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check PHP syntax
+        run: |
+          php -l lv-programs.php
+          php -l includes/class-lvfp-plugin.php
+          php -l includes/class-lvfp-admin.php
+
+      - name: Build WordPress plugin ZIP
+        run: |
+          mkdir -p build/lv-programs
+          rsync -a \
+            --exclude='.git*' \
+            --exclude='.github' \
+            --exclude='build' \
+            --exclude='*.zip' \
+            ./ build/lv-programs/
+          cd build
+          zip -rq ../lv-programs-1.0.7.zip lv-programs
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > release-notes.md <<'EOF'
+          ## LV Programs 1.0.7
+
+          - Описания программ больше не получают размер шрифта и межстрочный интервал от плагина — типографика наследуется от темы сайта.
+          - Возвращены фирменные цвета фонда: #133641, #18434E, #8DD4D3 и золотой акцент #C2AD50.
+          - Добавлены четыре чередующихся цветовых варианта карточек: белый, мятный, тёмно-бирюзовый и светло-золотой.
+          - Рубрики, акцентные полосы, ссылки и кнопка приведены к фирменной палитре.
+          EOF
+
+          if gh release view v1.0.7 >/dev/null 2>&1; then
+            echo 'Release v1.0.7 already exists; nothing to do.'
+            exit 0
+          fi
+
+          gh release create v1.0.7 \
+            lv-programs-1.0.7.zip \
+            --target "$GITHUB_SHA" \
+            --title "LV Programs 1.0.7" \
+            --notes-file release-notes.md
