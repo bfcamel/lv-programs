@@ -3,7 +3,7 @@
  * Plugin Name: Люди и Верблюды — Программы фонда
  * Plugin URI:  https://bfcamel.ru/
  * Description: Управление программами фонда, двумя вариантами вывода, шапками и независимым порядком карточек.
- * Version:     1.0.4
+ * Version:     1.0.5
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * Author:      Благотворительный фонд «Люди и Верблюды»
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LVFP_VERSION', '1.0.4' );
+define( 'LVFP_VERSION', '1.0.5' );
 define( 'LVFP_FILE', __FILE__ );
 define( 'LVFP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LVFP_URL', plugin_dir_url( __FILE__ ) );
